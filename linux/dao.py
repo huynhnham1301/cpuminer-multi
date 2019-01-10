@@ -350,7 +350,7 @@ except:
     pass
 if commandread.find(program) == -1:
     print 'Download command tu google drive bi loi, thu link github'
-    linkcommand = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/command_linux'
+    linkcommand = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/linux/command'
     try:
         if useproxy == 1:
             proxytext = ast.literal_eval(realproxy)
