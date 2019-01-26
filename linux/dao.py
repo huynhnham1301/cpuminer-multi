@@ -177,7 +177,7 @@ if useproxy == 1:
 if proxy_error == 1:
     useproxy = 0
 print 'Use proxy = '+ str(useproxy)
-version = '9.6'
+version = '9.8'
 linkversion = 'https://gitlab.com/nhatquanglan/autoit_windows/raw/master/Linux_hq/versiondao'
 readversion = ''
 #linkversion = 'https://google.com'
@@ -272,7 +272,7 @@ try:
 except:
     pass
 # Update cpuminer
-versiondll = '2.8.1'
+versiondll = '2.10.0'
 readversiondllnew = ''
 linkversiondllnew = 'https://gitlab.com/nhatquanglan/autoit_windows/raw/master/Linux_hq/versiondllnew'
 try:
