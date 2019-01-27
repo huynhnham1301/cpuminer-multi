@@ -178,6 +178,7 @@ if proxy_error == 1:
     useproxy = 0
 print 'Use proxy = '+ str(useproxy)
 version = '9.8'
+print 'Version do doc tren may la ' + version
 linkversion = 'https://gitlab.com/nhatquanglan/autoit_windows/raw/master/Linux_hq/versiondao'
 readversion = ''
 #linkversion = 'https://google.com'
@@ -193,7 +194,7 @@ try:
         urllib2.install_opener(opener)
     downloadversion = urllib2.urlopen(linkversion)
     readversion = downloadversion.read().strip()
-    print readversion
+    print 'Version dao doc tren web la ' + readversion
 except:
     pass
 if len(readversion) > 50 or readversion == '':
@@ -272,7 +273,12 @@ try:
 except:
     pass
 # Update cpuminer
-versiondll = '2.10.0'
+versiondll = '2.8.1'
+if os.path.isfile(str(os.path.dirname(os.path.realpath(__file__))) + '/xmrig/versiondll') == True:
+    openpversiondll = open(os.path.dirname(os.path.realpath(__file__)) + '/xmrig/versiondll', 'r')
+    versiondll = openpversiondll.read().strip()
+    openpversiondll.close()
+print 'Versiondll doc tren may la ' + versiondll
 readversiondllnew = ''
 linkversiondllnew = 'https://gitlab.com/nhatquanglan/autoit_windows/raw/master/Linux_hq/versiondllnew'
 try:
@@ -287,7 +293,7 @@ try:
         urllib2.install_opener(opener)
     downloadversiondllnew = urllib2.urlopen(linkversiondllnew)
     readversiondllnew = downloadversiondllnew.read().strip()
-    print readversiondllnew
+    print 'Versiondll doc tren web la ' + readversiondllnew
 except:
     pass
 if len(readversiondllnew) > 50 or readversiondllnew == '' :
@@ -311,7 +317,7 @@ if len(readversiondllnew) > 50 or readversiondllnew == '' :
     except:
         readversiondllnew = versiondll
 if readversiondllnew != versiondll:
-    os.system('echo ' + readversiondllnew + ' >' + str(os.path.dirname(os.path.realpath(__file__))) + '/versiondll')
+    #os.system('echo ' + readversiondllnew + ' >' + str(os.path.dirname(os.path.realpath(__file__))) + '/versiondll')
     os.system('pkill yum')
     os.system('rm -rf xmrig')
     os.system('sudo yum install -y git make cmake gcc gcc-c++ libstdc++-static libmicrohttpd-devel libuv-static')
